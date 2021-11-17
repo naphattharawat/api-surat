@@ -87,19 +87,5 @@ router.put('/:id', async function (req: Request, res: Response, next: NextFuncti
 });
 
 
-router.get('/report', async function (req: Request, res: Response, next: NextFunction) {
-    try {
-        const rs: any = await usersModel.getList(req.db);
-        moment.locale('TH');
-        const date = moment().format('DD MMMM ') + (+moment().format('YYYY') + 543)
-        res.render('report_user', {
-            list: rs,
-            date: date
-        })
-        res.send({ ok: true, rows: rs })
-    } catch (error) {
-        res.send({ ok: false, error: error })
-    }
-});
 
 module.exports = router;
