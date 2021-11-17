@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-
+import moment from 'moment';
 import { UsersModel } from "../model/users";
 const usersModel = new UsersModel();
 var CryptoJS = require("crypto-js");
@@ -11,6 +11,17 @@ var router = express.Router();
 router.get('/', async function (req: Request, res: Response, next: NextFunction) {
     try {
         const rs: any = await usersModel.getList(req.db);
+        res.send({ ok: true, rows: rs })
+    } catch (error) {
+        res.send({ ok: false, error: error })
+    }
+});
+
+router.get('/page', async function (req: Request, res: Response, next: NextFunction) {
+    try {
+        const limit: any = req.query.limit || 0;
+        const offset: any = req.query.offset || 0;
+        const rs: any = await usersModel.getListLimit(req.db, limit, offset);
         res.send({ ok: true, rows: rs })
     } catch (error) {
         res.send({ ok: false, error: error })
@@ -43,7 +54,7 @@ router.post('/', async function (req: Request, res: Response, next: NextFunction
                 const rs: any = await usersModel.saveUser(req.db, obj);
                 res.send({ ok: true, rows: rs })
             } else {
-                res.send({ok:false,error:'Username ซ้ำ'});
+                res.send({ ok: false, error: 'Username ซ้ำ' });
             }
         } else {
             res.send({ ok: false, error: 'ไม่พบ parameter' })
@@ -75,5 +86,20 @@ router.put('/:id', async function (req: Request, res: Response, next: NextFuncti
     }
 });
 
+
+router.get('/report', async function (req: Request, res: Response, next: NextFunction) {
+    try {
+        const rs: any = await usersModel.getList(req.db);
+        moment.locale('TH');
+        const date = moment().format('DD MMMM ') + (+moment().format('YYYY') + 543)
+        res.render('report_user', {
+            list: rs,
+            date: date
+        })
+        res.send({ ok: true, rows: rs })
+    } catch (error) {
+        res.send({ ok: false, error: error })
+    }
+});
 
 module.exports = router;

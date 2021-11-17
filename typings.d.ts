@@ -9,8 +9,8 @@ declare module 'express' {
     db: any // Actually should be something like `multer.Body`
     // knex: Knex,
     decoded: any // Actually should be something like `multer.Files`
-    // file: any
-    // files: any[];
-    // multer: any
+    file: any
+    files: any[];
+    multer: any
   }
 }

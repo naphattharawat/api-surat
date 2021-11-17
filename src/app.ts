@@ -17,6 +17,8 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var titlesRouter = require('./routes/titles');
 var loginRouter = require('./routes/login');
+var uploadRouter = require('./routes/upload');
+var reportRouter = require('./routes/report');
 
 
 var bodyParser = require('body-parser');
@@ -92,9 +94,11 @@ const checkAuth = async (req: Request, res: Response, next: NextFunction) => {
 
 
 app.use('/', indexRouter);
-app.use('/users', checkAuth, usersRouter);
-app.use('/titles', checkAuth,titlesRouter);
+app.use('/users', usersRouter);
+app.use('/titles',titlesRouter);
 app.use('/login', loginRouter);
+app.use('/upload', uploadRouter);
+app.use('/report', reportRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req: Request, res: Response, next: NextFunction) {

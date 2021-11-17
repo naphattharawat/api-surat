@@ -7,9 +7,9 @@ import { TestModel } from '../model/test';
 const testModel = new TestModel();
 
 
-router.get('/d', async function (req: Request, res: Response, next: NextFunction) {
+router.get('/', async function (req: Request, res: Response, next: NextFunction) {
   res.send({ ok: true});
-  // res.render('index', { title: 'Express' });
+  // res.render('report', { title: 'Express' });
 });
 
 router.get('/test', async function (req: Request, res: Response, next: NextFunction) {
