@@ -9,14 +9,17 @@ var cookieParser = require('cookie-parser');
 
 import { JwtModel } from "./model/jwt";
 const jwtModel = new JwtModel();
-
+const cors = require('cors');
 var logger = require('morgan');
 require('dotenv').config();
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var titlesRouter = require('./routes/titles');
 var loginRouter = require('./routes/login');
+// Admin
+var usersRouter = require('./routes/admin/users');
+var titlesRouter = require('./routes/admin/titles');
+var hospitalsRouter = require('./routes/admin/hospitals');
+// Other
 var uploadRouter = require('./routes/upload');
 var reportRouter = require('./routes/report');
 
@@ -37,7 +40,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(bodyParser.json({ limit: '20mb' }));
 app.use(bodyParser.urlencoded({ extended: false }));
-
+app.use(cors());
 
 const connection: any = {
   host: process.env.DB_HOST,
@@ -94,8 +97,9 @@ const checkAuth = async (req: Request, res: Response, next: NextFunction) => {
 
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/titles',titlesRouter);
+app.use('/admin/users', checkAuth, usersRouter);
+app.use('/admin/titles', checkAuth, titlesRouter);
+app.use('/admin/hospitals', checkAuth, hospitalsRouter);
 app.use('/login', loginRouter);
 app.use('/upload', uploadRouter);
 app.use('/report', reportRouter);

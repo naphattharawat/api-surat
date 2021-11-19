@@ -3,8 +3,9 @@ var express = require('express');
 var router = express.Router();
 
 
-
+// npm i uuid -S
 const { v4: uuidv4 } = require('uuid');
+// กำหนด เรื่อง path windows linux mac
 import * as path from 'path';
 import * as fs from 'fs';
 import * as fse from 'fs-extra';
@@ -15,6 +16,7 @@ import moment from 'moment';
 import { UploadModel } from '../model/upload';
 const uploadModel = new UploadModel();
 
+//กำหนด path ที่จะเซพ
 const uploadDir = process.env.UPLOAD_DIR || './upload';
 
 fse.ensureDirSync(uploadDir);
@@ -42,13 +44,10 @@ let upload = multer({ storage: storage })
 router.post('/', upload.any(), async (req: any, res: any) => {
   let db = req.db;
   let files = req.files;
-  // console.log(req);
-
   let docs: any = [];
 
   try {
     files.forEach((v: any) => {
-      // let fileData = fs.readFileSync(v.path);
       let document_id = uuidv4();
       let obj = {
         document_id: document_id,
@@ -72,8 +71,7 @@ router.post('/', upload.any(), async (req: any, res: any) => {
 });
 
 
-
-router.get('/info/:documentCode', upload.any(), async (req: any, res: any) => {
+router.get('/info/:documentId', upload.any(), async (req: any, res: any) => {
   let documentId = req.params.documentId;
   let db = req.db;
 

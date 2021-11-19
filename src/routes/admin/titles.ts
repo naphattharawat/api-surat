@@ -2,7 +2,7 @@ import { NextFunction, Response, Request } from 'express';
 var express = require('express');
 var router = express.Router();
 
-import { TitleModel } from '../model/titles';
+import { TitleModel } from '../../model/admin/titles';
 
 const titleModel = new TitleModel();
 

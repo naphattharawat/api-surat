@@ -8,7 +8,7 @@ export class UploadModel {
 
   getFiles(db: Knex, documentId: string) {
     return db('documents')
-      .select('document_id', 'file_name', 'file_path', 'upload_datetime', 'mime_type')
+      .select('document_id', 'file_name', 'file_path', 'mime_type')
       .where('document_id', documentId);
   }
 

@@ -13,7 +13,7 @@ import moment from 'moment';
 const exportPath = path.join(__dirname, './temp');
 fse.ensureDirSync(exportPath);
 
-import { UsersModel } from '../model/users';
+import { UsersModel } from '../model/admin/users';
 const usersModel = new UsersModel();
 /* GET users listing. */
 
@@ -22,11 +22,11 @@ router.get('/users', async function (req: Request, res: Response, next: NextFunc
         const rs: any = await usersModel.getList(req.db);
         moment.locale('TH');
         const date = moment().format('DD MMMM ') + (+moment().format('YYYY') + 543)
+
         res.render('report_user', {
             list: rs,
             date: date
         })
-        res.send({ ok: true, rows: rs })
     } catch (error) {
         res.send({ ok: false, error: error })
     }
@@ -38,12 +38,17 @@ router.get('/users/pdf', async function (req: Request, res: Response, next: Next
         const pdfPath = path.join(exportPath, fileName);
         const _ejsPath = path.join(__dirname, '../../views/report_user.ejs');
         var contents = fs.readFileSync(_ejsPath, 'utf8');
+
         //get Data
         const rs: any = await usersModel.getList(req.db);
 
         // create objects
+        // const data: any = {
+        //     date: `${moment().locale('th').format('D MMMM')} พ.ศ.​ ${moment().get('year') + 543}`,
+        //     list: rs
+        // }
         let data: any = {};
-        data.currentDate = `${moment().locale('th').format('D MMMM')} พ.ศ.​ ${moment().get('year') + 543}`;
+        data.date = `${moment().locale('th').format('D MMMM')} พ.ศ.​ ${moment().get('year') + 543}`;
         data.list = rs;
 
         // create HTML file

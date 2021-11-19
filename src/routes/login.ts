@@ -18,10 +18,13 @@ router.post('/', async function (req: Request, res: Response) {
             if (users[0].password == hash) {
                 const payload = {
                     id: users[0].id,
-                    first_name: users[0].first_name
+                    userType: users[0].type,
+                    hospcode: users[0].hospcode,
+                    first_name: users[0].first_name,
+                    last_name: users[0].last_name
                 }
                 const token = await jwtModel.sign(payload);
-                res.send({ ok: true, token: token });
+                res.send({ ok: true, token: token, info: payload });
             } else {
                 res.send({ ok: false, error: 'รหัสผ่านไม่ถูกต้อง' });
             }

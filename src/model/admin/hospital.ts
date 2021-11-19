@@ -1,26 +1,27 @@
 import { Knex } from 'knex';
-export class TitleModel {
+export class HospitalModel {
 
     getList(db: Knex) {
-        return db('titles')
+        return db('hospitals')
+        .where('is_deleted','N')
     }
     getInfo(db: Knex, id: any) {
-        return db('titles')
+        return db('hospitals')
             .where('id', id);
     }
     save(db: Knex, data: any) {
-        return db('titles')
+        return db('hospitals')
             .insert(data);
     }
     update(db: Knex, id: any, data: any) {
-        return db('titles')
+        return db('hospitals')
             .where('id', id)
             .update(data);
     }
     delete(db: Knex, id: any) {
-        return db('titles')
+        return db('hospitals')
             .where('id', id)
-            .delete();
+            .update('is_deleted','Y');
     }
 }
 
